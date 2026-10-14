@@ -1,5 +1,3 @@
-# Place in ~/
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -86,6 +84,9 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+# Readable colours for world-writable dirs (common on mounted drives)
+export LS_COLORS="${LS_COLORS}:ow=1;34:tw=1;34:"
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # User configuration
 

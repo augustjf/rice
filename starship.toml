@@ -1,5 +1,3 @@
-# Place in ~/.config/ 
-
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
@@ -11,6 +9,9 @@ $directory\
 [](bg:yellow fg:red)\
 $git_branch\
 $git_status\
+$hg_branch\
+${custom.hg_status}\
+$hg_state\
 [](fg:yellow bg:green)\
 $c\
 $rust\
@@ -21,10 +22,7 @@ $java\
 $kotlin\
 $haskell\
 $python\
-[](fg:green bg:peach)\
-$conda\
-$python_env\
-[](fg:peach bg:lavender)\
+[](fg:green bg:lavender)\
 $time\
 [ ](fg:lavender)\
 $cmd_duration\
@@ -86,6 +84,37 @@ format = '[[ $symbol $branch ](fg:crust bg:yellow)]($style)'
 style = "bg:yellow"
 format = '[[($all_status$ahead_behind )](fg:crust bg:yellow)]($style)'
 
+[hg_branch]
+symbol = "☿"
+style = "bg:yellow"
+format = '[[ $symbol $branch ](fg:crust bg:yellow)]($style)'
+disabled = false
+
+[hg_state]
+style = "bg:yellow"
+format = '[[ $state( $progress_current/$progress_total )](fg:crust bg:yellow)]($style)'
+disabled = false
+
+[custom.hg_status]
+description = "Mercurial working tree status"
+when = 'hg root >/dev/null 2>&1'
+command = '''
+hg status --color=never 2>/dev/null | awk '
+  substr($0, 1, 1) == "M" { modified = 1 }
+  substr($0, 1, 1) == "A" { added = 1 }
+  substr($0, 1, 1) == "R" || substr($0, 1, 1) == "!" { deleted = 1 }
+  substr($0, 1, 1) == "?" { unknown = 1 }
+  END {
+    if (modified) printf "!"
+    if (added) printf "+"
+    if (deleted) printf "✘"
+    if (unknown) printf "?"
+  }
+'
+'''
+style = "bg:yellow"
+format = '[[($output )](fg:crust bg:yellow)]($style)'
+
 [nodejs]
 symbol = ""
 style = "bg:green"
@@ -130,26 +159,6 @@ format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
 symbol = ""
 style = "bg:green"
 format = '[[ $symbol( $version)(\(#$virtualenv\)) ](fg:crust bg:green)]($style)'
-
-[docker_context]
-symbol = ""
-style = "bg:peach"
-format = '[[ $symbol( $context) ](fg:crust bg:sapphire)]($style)'
-
-[conda]
-symbol = "  "
-style = "fg:crust bg:peach"
-format = '[$symbol$environment ]($style)'
-ignore_base = false
-
-[python_env]
-symbol = ""
-style = "fg:crust bg:peach"
-format = '[ $symbol( $version)( \($virtualenv\)) ]($style)'
-# Only show when a venv is active, not just because a .py file is in the folder:
-detect_extensions = []
-detect_files = []
-detect_folders = []
 
 [time]
 disabled = false
