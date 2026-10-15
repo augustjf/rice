@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_AUTOCONNECT=false
+ZSH_TMUX_AUTONAME_SESSION=false
+ZSH_TMUX_DEFAULT_SESSION_NAME=""
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
