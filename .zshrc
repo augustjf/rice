@@ -88,9 +88,11 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-# Readable colours for world-writable dirs (common on mounted drives)
+# ls colours: load Ubuntu defaults, then make world-writable dirs readable
+eval "$(dircolors -b)"
 export LS_COLORS="${LS_COLORS}:ow=1;34:tw=1;34:"
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+alias ls='ls --color=auto'
 
 # User configuration
 
